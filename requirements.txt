@@ -1,0 +1,17 @@
+# Core app
+fastapi
+uvicorn[standard]
+streamlit
+
+# Azure SDKs
+openai
+azure-search-documents
+azure-identity
+
+# Ingestion / chunking
+pypdf
+tiktoken
+
+# Utilities
+python-dotenv
+pydantic
