@@ -1,0 +1,314 @@
+[
+  {
+    "id": "htn-001",
+    "question": "At what blood pressure level does WHO recommend starting pharmacological treatment for a person with a confirmed hypertension diagnosis and no other risk factors?",
+    "expected_answer": "Systolic blood pressure ≥140 mmHg or diastolic blood pressure ≥90 mmHg (strong recommendation, moderate- to high-certainty evidence).",
+    "source": "who-hypertension-pharmacological-treatment-2021.pdf",
+    "category": "hypertension",
+    "type": "answerable"
+  },
+  {
+    "id": "htn-002",
+    "question": "What blood pressure threshold applies for starting antihypertensive treatment in someone who already has cardiovascular disease?",
+    "expected_answer": "Systolic blood pressure of 130–139 mmHg (strong recommendation).",
+    "source": "who-hypertension-pharmacological-treatment-2021.pdf",
+    "category": "hypertension",
+    "type": "answerable"
+  },
+  {
+    "id": "htn-003",
+    "question": "Which three drug classes does WHO recommend as first-line agents for treating hypertension?",
+    "expected_answer": "Thiazide/thiazide-like diuretics, ACE inhibitors/angiotensin-receptor blockers (ACEi/ARB), and long-acting dihydropyridine calcium channel blockers (CCBs).",
+    "source": "who-hypertension-pharmacological-treatment-2021.pdf",
+    "category": "hypertension",
+    "type": "answerable"
+  },
+  {
+    "id": "htn-004",
+    "question": "Does a patient need lab tests before starting hypertension medication, according to WHO?",
+    "expected_answer": "WHO suggests obtaining screening tests (electrolytes, creatinine, lipid panel, HbA1c/fasting glucose, urine dipstick, ECG) but only when this does not delay or impede starting treatment. In low-resource settings, treatment should not be delayed for testing.",
+    "source": "who-hypertension-pharmacological-treatment-2021.pdf",
+    "category": "hypertension",
+    "type": "answerable"
+  },
+  {
+    "id": "htn-005",
+    "question": "Under what conditions can nonphysician health workers such as pharmacists or nurses prescribe hypertension treatment?",
+    "expected_answer": "As long as they have proper training, prescribing authority, follow specific management protocols, and have physician oversight.",
+    "source": "who-hypertension-pharmacological-treatment-2021.pdf",
+    "category": "hypertension",
+    "type": "answerable"
+  },
+  {
+    "id": "htn-006",
+    "question": "How soon should a patient be followed up after starting antihypertensive medication?",
+    "expected_answer": "About one month after initiation is a reasonable approach; once blood pressure is close to target and stable, follow-up intervals of 3 to 6 months can be applied.",
+    "source": "who-hypertension-pharmacological-treatment-2021.pdf",
+    "category": "hypertension",
+    "type": "answerable"
+  },
+  {
+    "id": "htn-007",
+    "question": "Should ACE inhibitors or ARBs be discontinued in a hypertensive patient who is diagnosed with COVID-19?",
+    "expected_answer": "No. WHO's review found no association between ACEi/ARB use and increased COVID-19 severity, and most professional societies recommend continuing these medications since discontinuation may be harmful in high-risk patients.",
+    "source": "who-hypertension-pharmacological-treatment-2021.pdf",
+    "category": "hypertension",
+    "type": "answerable"
+  },
+  {
+    "id": "dm2-001",
+    "question": "What medicine does WHO recommend as the second-line treatment for type 2 diabetes when metformin alone is not enough?",
+    "expected_answer": "A sulfonylurea (strong recommendation), unless the patient has contraindications to metformin.",
+    "source": "who-diabetes-second-third-line-medicines-2018.pdf",
+    "category": "diabetes",
+    "type": "answerable"
+  },
+  {
+    "id": "dm2-002",
+    "question": "What does WHO recommend as third-line treatment when metformin and sulfonylurea are not enough to control type 2 diabetes?",
+    "expected_answer": "Introduce human insulin (strong recommendation). If insulin is unsuitable, a DPP-4 inhibitor, SGLT-2 inhibitor, or a thiazolidinedione (TZD) may be added instead (weak recommendation).",
+    "source": "who-diabetes-second-third-line-medicines-2018.pdf",
+    "category": "diabetes",
+    "type": "answerable"
+  },
+  {
+    "id": "dm2-003",
+    "question": "Does WHO recommend human insulin or insulin analogues as the default choice for people who need insulin?",
+    "expected_answer": "Human insulin is the strong recommendation for both type 1 diabetes and type 2 diabetes where insulin is indicated, mainly because evidence of better effectiveness for analogues is lacking and human insulin has a better resource-use/cost profile.",
+    "source": "who-diabetes-second-third-line-medicines-2018.pdf",
+    "category": "diabetes",
+    "type": "answerable"
+  },
+  {
+    "id": "dm2-004",
+    "question": "When should long-acting insulin analogues be considered instead of human insulin?",
+    "expected_answer": "Only for adults with type 1 or type 2 diabetes who have frequent severe hypoglycaemia while on human insulin (weak recommendation).",
+    "source": "who-diabetes-second-third-line-medicines-2018.pdf",
+    "category": "diabetes",
+    "type": "answerable"
+  },
+  {
+    "id": "dm-preg-001",
+    "question": "Should continuous glucose monitoring (CGM) be routinely used for pregnant women with gestational diabetes?",
+    "expected_answer": "No. WHO recommends CGM for pregnant women with type 1 diabetes where feasible, but does not routinely recommend CGM for pregnant women with type 2 or gestational diabetes.",
+    "source": "who-diabetes-in-pregnancy-recommendations-2025.pdf",
+    "category": "diabetes",
+    "type": "answerable"
+  },
+  {
+    "id": "dm-preg-002",
+    "question": "Should HbA1c be routinely measured in women with gestational diabetes mellitus (GDM)?",
+    "expected_answer": "No, WHO recommends not routinely measuring HbA1c for women with GDM. For pregnant women with type 1 or type 2 diabetes, HbA1c should be measured in the first trimester or as soon as antenatal care starts.",
+    "source": "who-diabetes-in-pregnancy-recommendations-2025.pdf",
+    "category": "diabetes",
+    "type": "answerable"
+  },
+  {
+    "id": "dm-preg-003",
+    "question": "What treatment does WHO recommend for a pregnant woman with type 2 diabetes who cannot achieve optimal blood glucose with diet and physical activity alone?",
+    "expected_answer": "Initiation of metformin or insulin to optimize blood glucose control and outcomes for the woman and baby.",
+    "source": "who-diabetes-in-pregnancy-recommendations-2025.pdf",
+    "category": "diabetes",
+    "type": "answerable"
+  },
+  {
+    "id": "dm-preg-004",
+    "question": "What treatment does WHO recommend for a woman with gestational diabetes mellitus (GDM) who cannot achieve optimal blood glucose with diet and physical activity alone?",
+    "expected_answer": "Initiation of metformin or insulin to optimize blood glucose control and outcomes for the woman and baby — the same approach as for type 2 diabetes in pregnancy.",
+    "source": "who-diabetes-in-pregnancy-recommendations-2025.pdf",
+    "category": "diabetes",
+    "type": "answerable"
+  },
+  {
+    "id": "dm-preg-005",
+    "question": "Does WHO recommend self-monitoring of blood glucose (SMBG) for pregnant women with diabetes?",
+    "expected_answer": "Yes, WHO recommends SMBG in addition to routine care for pregnant women with type 1, type 2, or gestational diabetes, where feasible.",
+    "source": "who-diabetes-in-pregnancy-recommendations-2025.pdf",
+    "category": "diabetes",
+    "type": "answerable"
+  },
+  {
+    "id": "dm-preg-006",
+    "question": "Should a pregnant woman with pre-existing type 1 diabetes switch her type of insulin when she becomes pregnant?",
+    "expected_answer": "No, not by default. WHO recommends continuing the same type of insulin (and the same delivery method) used before pregnancy, unless a change is considered necessary to optimize blood glucose control and outcomes.",
+    "source": "who-diabetes-in-pregnancy-recommendations-2025.pdf",
+    "category": "diabetes",
+    "type": "answerable"
+  },
+  {
+    "id": "dm-mon-001",
+    "question": "What are WHO's five global diabetes coverage targets to be achieved by 2030?",
+    "expected_answer": "(i) 80% of people with diabetes are diagnosed; (ii) 80% of people with diagnosed diabetes have good glycaemic control; (iii) 80% have good blood pressure control; (iv) 60% of people with diabetes aged 40+ receive statins; (v) 100% of people with type 1 diabetes have access to affordable insulin and blood glucose self-monitoring.",
+    "source": "who-diabetes-global-monitoring-guidance.pdf",
+    "category": "diabetes",
+    "type": "answerable"
+  },
+  {
+    "id": "dm-mon-002",
+    "question": "What proportion of people with diabetes worldwide have type 2 diabetes rather than type 1?",
+    "expected_answer": "More than 95% of people with diabetes have type 2 diabetes.",
+    "source": "who-diabetes-global-monitoring-guidance.pdf",
+    "category": "diabetes",
+    "type": "answerable"
+  },
+  {
+    "id": "dm-hw-001",
+    "question": "What fasting blood glucose level is considered diagnostic for diabetes mellitus?",
+    "expected_answer": "A fasting blood sugar greater than 126 mg/dl is considered diagnostic for diabetes (fasting defined as no calorie intake for at least 8 hours).",
+    "source": "who-managing-diabetes-mellitus-health-workers-guide.pdf",
+    "category": "diabetes",
+    "type": "answerable"
+  },
+  {
+    "id": "dm-hw-002",
+    "question": "What fasting plasma glucose range is classified as Impaired Fasting Glucose (IFG) rather than diabetes?",
+    "expected_answer": "Fasting plasma glucose (FPG) greater than 110 mg/dl but less than 126 mg/dl is classified as Impaired Fasting Glucose.",
+    "source": "who-managing-diabetes-mellitus-health-workers-guide.pdf",
+    "category": "diabetes",
+    "type": "answerable"
+  },
+  {
+    "id": "dm-hw-003",
+    "question": "What are some risk factors that should prompt screening a person for diabetes?",
+    "expected_answer": "Family history of diabetes, obesity, age over 40 years, prior impaired glucose tolerance, use of certain drugs (steroids, oral contraceptives, thiazide diuretics), having hypertension or hyperlipidemia, physical inactivity, and (for women) a history of gestational diabetes or a baby with birth weight over 4 kg.",
+    "source": "who-managing-diabetes-mellitus-health-workers-guide.pdf",
+    "category": "diabetes",
+    "type": "answerable"
+  },
+  {
+    "id": "cvd-001",
+    "question": "What do the color bands in the WHO CVD risk chart mean, and what range does \"red\" correspond to?",
+    "expected_answer": "The bands represent 10-year probability of a fatal or non-fatal cardiovascular event: green <5%, yellow 5% to <10%, orange 10% to <20%, red 20% to <30%, deep red ≥30%.",
+    "source": "who-cvd-risk-know-your-risk-booklet.pdf",
+    "category": "cardiovascular",
+    "type": "answerable"
+  },
+  {
+    "id": "cvd-002",
+    "question": "What parameters are used in the WHO laboratory-based CVD risk assessment?",
+    "expected_answer": "Age, gender, smoking status, systolic blood pressure, presence or absence of diabetes, and total cholesterol.",
+    "source": "who-cvd-risk-know-your-risk-booklet.pdf",
+    "category": "cardiovascular",
+    "type": "answerable"
+  },
+  {
+    "id": "cvd-003",
+    "question": "At what BMI is a person classified as obese according to the WHO categories in this guidance?",
+    "expected_answer": "A BMI of 30.0 or higher is classified as obesity.",
+    "source": "who-cvd-risk-know-your-risk-booklet.pdf",
+    "category": "cardiovascular",
+    "type": "answerable"
+  },
+  {
+    "id": "cvd-004",
+    "question": "How is hypertension diagnosed according to the criteria in this WHO guidance?",
+    "expected_answer": "By measurement on two visits on different days, where systolic blood pressure is ≥140 mmHg and/or diastolic blood pressure is ≥90 mmHg on both days.",
+    "source": "who-cvd-risk-know-your-risk-booklet.pdf",
+    "category": "cardiovascular",
+    "type": "answerable"
+  },
+  {
+    "id": "cvd-005",
+    "question": "What fasting plasma glucose value is used as the diagnostic cut-off for diabetes in this WHO guidance?",
+    "expected_answer": "A fasting venous or capillary plasma glucose ≥7.0 mmol/L (126 mg/dL).",
+    "source": "who-cvd-risk-know-your-risk-booklet.pdf",
+    "category": "cardiovascular",
+    "type": "answerable"
+  },
+  {
+    "id": "cvd-006",
+    "question": "At what waist circumference is a person considered to have a \"substantially increased risk\" of metabolic complications?",
+    "expected_answer": "Waist circumference >102 cm for men or >88 cm for women.",
+    "source": "who-cvd-risk-know-your-risk-booklet.pdf",
+    "category": "cardiovascular",
+    "type": "answerable"
+  },
+  {
+    "id": "cvd-007",
+    "question": "For a person with a lab-based CVD risk above 20%, at what blood pressure should drug treatment be considered, and is a statin recommended?",
+    "expected_answer": "Consider drug treatment if persistent BP ≥130/80 mmHg (a lower threshold than for lower-risk groups), and give a statin.",
+    "source": "who-cvd-risk-know-your-risk-booklet.pdf",
+    "category": "cardiovascular",
+    "type": "answerable"
+  },
+  {
+    "id": "cmr-001",
+    "question": "According to the cardiometabolic risk management guideline, is it better to combine antihypertensive agents at medium doses or use a single agent at high dose?",
+    "expected_answer": "Combining agents at medium doses is recommended — it can be more effective than a high-dose single agent, and can result in fewer side effects.",
+    "source": "who-cardiometabolic-risk-management-primary-care-2021.pdf",
+    "category": "cardiovascular",
+    "type": "answerable"
+  },
+  {
+    "id": "cmr-002",
+    "question": "What is the usual starting-to-maximum oral dose range for metformin according to the cardiometabolic risk management dosing table?",
+    "expected_answer": "500 mg once daily up to 1000 mg twice daily (an extended-release/XR formulation may be prescribed once at night).",
+    "source": "who-cardiometabolic-risk-management-primary-care-2021.pdf",
+    "category": "cardiovascular",
+    "type": "answerable"
+  },
+  {
+    "id": "refuse-001",
+    "question": "What is the recommended chemotherapy dosage for treating lung cancer?",
+    "expected_answer": "Not covered by this corpus — the system should decline to answer rather than guess, since none of the indexed documents address cancer chemotherapy.",
+    "source": null,
+    "category": "out-of-scope",
+    "type": "should_refuse"
+  },
+  {
+    "id": "refuse-002",
+    "question": "What antibiotic should be used to treat community-acquired bacterial pneumonia?",
+    "expected_answer": "Not covered by this corpus — the guidelines indexed here are about hypertension, diabetes, and cardiovascular risk, not infectious disease treatment.",
+    "source": null,
+    "category": "out-of-scope",
+    "type": "should_refuse"
+  },
+  {
+    "id": "refuse-003",
+    "question": "What is the recommended childhood vaccination schedule according to WHO?",
+    "expected_answer": "Not covered by this corpus — no immunization schedule documents are indexed.",
+    "source": null,
+    "category": "out-of-scope",
+    "type": "should_refuse"
+  },
+  {
+    "id": "refuse-004",
+    "question": "What medication is first-line for treating major depressive disorder?",
+    "expected_answer": "Not covered by this corpus — no mental health treatment guidelines are indexed.",
+    "source": null,
+    "category": "out-of-scope",
+    "type": "should_refuse"
+  },
+  {
+    "id": "refuse-005",
+    "question": "What is the standard surgical technique for an appendectomy?",
+    "expected_answer": "Not covered by this corpus — no surgical guidance is indexed.",
+    "source": null,
+    "category": "out-of-scope",
+    "type": "should_refuse"
+  },
+  {
+    "id": "refuse-006",
+    "question": "What inhaled corticosteroid dose is recommended for a child with moderate persistent asthma?",
+    "expected_answer": "Not covered by this corpus — no respiratory/asthma management guidelines are indexed.",
+    "source": null,
+    "category": "out-of-scope",
+    "type": "should_refuse"
+  },
+  {
+    "id": "refuse-007",
+    "question": "What is the first-line antiretroviral therapy regimen for a newly diagnosed HIV patient?",
+    "expected_answer": "Not covered by this corpus — no HIV/antiretroviral treatment guidelines are indexed.",
+    "source": null,
+    "category": "out-of-scope",
+    "type": "should_refuse"
+  },
+  {
+    "id": "refuse-008",
+    "question": "Within what time window after symptom onset should thrombolysis be given for an acute ischemic stroke?",
+    "expected_answer": "Not covered by this corpus — no acute stroke management guidelines are indexed.",
+    "source": null,
+    "category": "out-of-scope",
+    "type": "should_refuse"
+  }
+]
