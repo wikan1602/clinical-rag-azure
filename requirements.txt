@@ -11,7 +11,9 @@ azure-identity
 # Ingestion / chunking
 pypdf
 tiktoken
+numpy
 
 # Utilities
 python-dotenv
 pydantic
+requests

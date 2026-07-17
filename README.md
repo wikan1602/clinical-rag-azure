@@ -14,7 +14,8 @@ See [Blueprint_Production_RAG_Azure.md](Blueprint_Production_RAG_Azure.md) for t
 
 ## Setup
 
-1. Copy `.env.example` to `.env` and fill in your Azure OpenAI / Azure AI Search credentials.
+1. Create and activate a virtual environment: `python -m venv .venv` then `.venv\Scripts\activate` (Windows).
 2. `pip install -r requirements.txt`
-3. Run the API: `uvicorn app.main:app --reload`
-4. Run the UI: `streamlit run ui/app.py`
+3. Copy `.env.example` to `.env` and fill in your Azure OpenAI / Azure AI Search credentials.
+4. Run the API: `uvicorn app.main:app --reload`
+5. Run the UI: `streamlit run ui/app.py`

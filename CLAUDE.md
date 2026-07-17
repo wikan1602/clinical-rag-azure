@@ -4,7 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Status
 
-This repository currently contains only a planning document — [Blueprint_Production_RAG_Azure.md](Blueprint_Production_RAG_Azure.md). No code, build tooling, or dependency manifests exist yet. There are no build/lint/test commands to run until implementation begins.
+Week 1 in progress. Azure foundation is provisioned; application code (ingestion, FastAPI, Streamlit, eval) has not been written yet. There are no build/lint/test commands to run until that code exists.
+
+Provisioned so far (resource group `rg-clinical-rag`, region `eastus`):
+- Azure AI Search `search-clinical-rag` (Free tier — no semantic ranker; upgrade to Basic later if semantic ranking from the blueprint's hybrid-search design is needed)
+- Azure OpenAI `openai-clinical-rag` with two deployments:
+  - `gpt-5-mini` (chat) — the blueprint specifies GPT-4o-mini, but that model (and gpt-4.1-mini) is closed for new deployments as of this writing; gpt-5-mini is the replacement. Re-check model availability with `az cognitiveservices account list-models` before assuming a blueprint-named model can still be deployed.
+  - `text-embedding-3-small` (embeddings)
+- Local `.env` holds real credentials for both (gitignored) — `.env.example` shows the required shape only.
 
 When code is added, update this file with the actual commands (e.g., `pytest`, `docker build`, `az deployment ...`) and remove this notice.
 
@@ -16,7 +23,7 @@ Full plan, weekly breakdown, and open decisions live in the blueprint — read i
 
 ## Intended Architecture
 
-Data flow: Document corpus → chunking pipeline (fixed-size vs. semantic, compared empirically) → embeddings → Azure AI Search (hybrid vector + keyword + semantic ranker) → FastAPI RAG service (retrieval → prompt → generation via Azure OpenAI GPT-4o-mini) → Streamlit UI. A parallel evaluation track (RAGAS) runs a golden Q&A dataset against the pipeline for regression testing and CI gating.
+Data flow: Document corpus → chunking pipeline (fixed-size vs. semantic, compared empirically) → embeddings → Azure AI Search (hybrid vector + keyword + semantic ranker) → FastAPI RAG service (retrieval → prompt → generation via Azure OpenAI gpt-5-mini) → Streamlit UI. A parallel evaluation track (RAGAS) runs a golden Q&A dataset against the pipeline for regression testing and CI gating.
 
 Key components once built:
 - **Ingestion/chunking pipeline** — compares fixed-size vs. semantic chunking; the choice must be justified by eval data, not intuition (see blueprint §4 Week 1–2).
