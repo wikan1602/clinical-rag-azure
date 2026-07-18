@@ -1,6 +1,10 @@
+import logging
+
+from azure.monitor.opentelemetry import configure_azure_monitor
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from openai import AzureOpenAI
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from pydantic import BaseModel
 
 from app.config import get_settings
@@ -8,8 +12,11 @@ from app.generation import generate_answer
 from app.retrieval import retrieve_chunks
 
 load_dotenv()
+configure_azure_monitor()
+logging.getLogger("rag").setLevel(logging.INFO)
 
 app = FastAPI(title="Clinical Knowledge Assistant")
+FastAPIInstrumentor().instrument_app(app)
 settings = get_settings()
 openai_client = AzureOpenAI(
     azure_endpoint=settings.openai_endpoint,

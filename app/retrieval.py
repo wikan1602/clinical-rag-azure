@@ -1,9 +1,13 @@
+import logging
+
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents import SearchClient
 from azure.search.documents.models import VectorizedQuery
 from openai import AzureOpenAI
 
 from app.config import Settings
+
+logger = logging.getLogger("rag.retrieval")
 
 
 def embed_query(client: AzureOpenAI, deployment: str, text: str) -> list[float]:
@@ -33,7 +37,7 @@ def retrieve_chunks(
         select=["id", "content", "source", "chunk_index"],
     )
 
-    return [
+    chunks = [
         {
             "id": r["id"],
             "content": r["content"],
@@ -43,3 +47,15 @@ def retrieve_chunks(
         }
         for r in results
     ]
+
+    logger.info(
+        "retrieved_chunks",
+        extra={
+            "question": question,
+            "index_name": index_name,
+            "chunk_ids": [c["id"] for c in chunks],
+            "chunk_sources": [c["source"] for c in chunks],
+            "num_chunks": len(chunks),
+        },
+    )
+    return chunks

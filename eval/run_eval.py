@@ -1,9 +1,11 @@
 import json
+import logging
 import statistics
 from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
+from azure.monitor.opentelemetry import configure_azure_monitor
 from dotenv import load_dotenv
 from openai import AzureOpenAI
 
@@ -11,6 +13,9 @@ from app.config import get_settings
 from eval.metrics import answer_relevancy, context_precision, context_recall, detect_refusal, faithfulness
 
 load_dotenv()
+configure_azure_monitor()
+logger = logging.getLogger("rag.eval")
+logger.setLevel(logging.INFO)
 
 API_URL = "http://127.0.0.1:8000"
 GOLDEN_DATASET_PATH = Path("eval/golden_dataset.json")
@@ -90,6 +95,9 @@ def main() -> None:
             results.append(result)
 
     summaries = [summarize(results, s) for s in STRATEGIES]
+
+    for s in summaries:
+        logger.info("eval_summary", extra={k: v for k, v in s.items() if v is not None})
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")

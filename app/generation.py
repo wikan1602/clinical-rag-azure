@@ -1,4 +1,8 @@
+import logging
+
 from openai import AzureOpenAI
+
+logger = logging.getLogger("rag.generation")
 
 SYSTEM_PROMPT = (
     "You are a clinical knowledge assistant. Answer the user's question ONLY using the "
@@ -15,6 +19,8 @@ def build_prompt(question: str, chunks: list[dict]) -> str:
 
 def generate_answer(client: AzureOpenAI, deployment: str, question: str, chunks: list[dict]) -> str:
     prompt = build_prompt(question, chunks)
+    logger.info("generation_prompt", extra={"question": question, "prompt": prompt})
+
     response = client.chat.completions.create(
         model=deployment,
         messages=[
@@ -22,4 +28,15 @@ def generate_answer(client: AzureOpenAI, deployment: str, question: str, chunks:
             {"role": "user", "content": prompt},
         ],
     )
-    return response.choices[0].message.content
+    answer = response.choices[0].message.content
+
+    logger.info(
+        "generation_answer",
+        extra={
+            "question": question,
+            "answer": answer,
+            "prompt_tokens": response.usage.prompt_tokens,
+            "completion_tokens": response.usage.completion_tokens,
+        },
+    )
+    return answer
