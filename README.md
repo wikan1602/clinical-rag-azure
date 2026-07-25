@@ -19,3 +19,16 @@ See [Blueprint_Production_RAG_Azure.md](Blueprint_Production_RAG_Azure.md) for t
 3. Copy `.env.example` to `.env` and fill in your Azure OpenAI / Azure AI Search credentials.
 4. Run the API: `uvicorn app.main:app --reload`
 5. Run the UI: `streamlit run ui/app.py`
+
+## Running with Docker
+
+Requires Docker Desktop and a filled-in `.env` (same one used for local venv setup — credentials are passed in at container runtime, never baked into the image).
+
+```
+docker compose up --build
+```
+
+- API: `http://localhost:8000` (health check at `/health`)
+- UI: `http://localhost:8501`
+
+`Dockerfile.api` and `Dockerfile.ui` build two separate images (the API and UI are independent processes communicating over HTTP — `docker-compose.yml` wires the UI container to the API container via `API_URL=http://api:8000`, Docker Compose's internal service DNS).

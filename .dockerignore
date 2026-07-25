@@ -1,0 +1,14 @@
+.venv/
+venv/
+.git/
+.claude/
+__pycache__/
+*.pyc
+.env
+data/raw/
+data/processed/
+eval/
+docs/
+Blueprint_Production_RAG_Azure.md
+README.md
+CLAUDE.md
