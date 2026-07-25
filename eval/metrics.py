@@ -2,7 +2,7 @@ import json
 import time
 
 import numpy as np
-from openai import AzureOpenAI, RateLimitError
+from openai import APIConnectionError, AzureOpenAI, RateLimitError
 
 from ingestion.embeddings import embed_texts
 
@@ -43,6 +43,11 @@ def _judge_json(client: AzureOpenAI, deployment: str, prompt: str, max_retries: 
                 raise
             print(f"    Rate limited, waiting 60s (attempt {attempt + 1}/{max_retries})...")
             time.sleep(60)
+        except APIConnectionError:
+            if attempt == max_retries - 1:
+                raise
+            print(f"    Connection error, waiting 10s (attempt {attempt + 1}/{max_retries})...")
+            time.sleep(10)
 
     content = response.choices[0].message.content.strip()
     if content.startswith("```"):
@@ -128,5 +133,5 @@ def context_recall(client: AzureOpenAI, deployment: str, expected_answer: str, c
 
 
 def detect_refusal(answer: str) -> bool:
-    lowered = answer.lower()
+    lowered = answer.lower().replace("’", "'").replace("‘", "'")
     return any(phrase in lowered for phrase in REFUSAL_PHRASES)

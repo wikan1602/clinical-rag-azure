@@ -37,6 +37,8 @@ def index_strategy(strategy: str, path: Path) -> None:
             "strategy": record["strategy"],
             "chunk_index": record["chunk_index"],
             "token_count": record["token_count"],
+            "topic": record["topic"],
+            "published_year": record["published_year"],
             "content_vector": vector,
         }
         for record, vector in zip(records, vectors)

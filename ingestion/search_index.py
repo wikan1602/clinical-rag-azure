@@ -42,6 +42,14 @@ def build_index_definition(index_name: str) -> SearchIndex:
         SimpleField(name="strategy", type=SearchFieldDataType.String, filterable=True, facetable=True),
         SimpleField(name="chunk_index", type=SearchFieldDataType.Int32),
         SimpleField(name="token_count", type=SearchFieldDataType.Int32),
+        SimpleField(name="topic", type=SearchFieldDataType.String, filterable=True, facetable=True),
+        SimpleField(
+            name="published_year",
+            type=SearchFieldDataType.Int32,
+            filterable=True,
+            sortable=True,
+            facetable=True,
+        ),
         SearchField(
             name="content_vector",
             type=SearchFieldDataType.Collection(SearchFieldDataType.Single),

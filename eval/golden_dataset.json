@@ -310,5 +310,59 @@
     "source": null,
     "category": "out-of-scope",
     "type": "should_refuse"
+  },
+  {
+    "id": "temporal-001",
+    "question": "What is WHO's most recent guidance on diabetes in pregnancy?",
+    "expected_answer": "WHO recommendations on care for women with diabetes during pregnancy (2025) is the most recent WHO guidance in this corpus addressing diabetes.",
+    "source": "who-diabetes-in-pregnancy-recommendations-2025.pdf",
+    "category": "diabetes",
+    "type": "answerable",
+    "expected_route": "temporal"
+  },
+  {
+    "id": "temporal-002",
+    "question": "Apa panduan WHO terbaru soal diabetes?",
+    "expected_answer": "WHO recommendations on care for women with diabetes during pregnancy (2025) is the most recent WHO guidance in this corpus addressing diabetes.",
+    "source": "who-diabetes-in-pregnancy-recommendations-2025.pdf",
+    "category": "diabetes",
+    "type": "answerable",
+    "expected_route": "temporal"
+  },
+  {
+    "id": "temporal-003",
+    "question": "What is the newest WHO publication in this corpus addressing diabetes management?",
+    "expected_answer": "WHO recommendations on care for women with diabetes during pregnancy (2025) is the most recent WHO guidance in this corpus addressing diabetes.",
+    "source": "who-diabetes-in-pregnancy-recommendations-2025.pdf",
+    "category": "diabetes",
+    "type": "answerable",
+    "expected_route": "temporal"
+  },
+  {
+    "id": "aggregate-001",
+    "question": "Summarize all of WHO's recommendations about target blood pressure and treatment thresholds for hypertension in this corpus.",
+    "expected_answer": "WHO recommends starting pharmacological treatment at systolic ≥140 or diastolic ≥90 mmHg generally, or at 130–139 mmHg systolic for those with existing cardiovascular disease or high risk (diabetes, CKD). Target blood pressure is <140/90 mmHg for uncomplicated hypertension, and a systolic target <130 mmHg for high-risk patients with existing CVD or high CVD risk, diabetes, or chronic kidney disease. Follow-up is monthly until target is reached, then every 3–6 months.",
+    "source": "who-hypertension-pharmacological-treatment-2021.pdf",
+    "category": "hypertension",
+    "type": "answerable",
+    "expected_route": "aggregate"
+  },
+  {
+    "id": "aggregate-002",
+    "question": "Ringkas semua rekomendasi WHO terkait penilaian risiko penyakit kardiovaskular.",
+    "expected_answer": "WHO merekomendasikan penggunaan chart risiko CVD non-laboratorium (berdasarkan usia, jenis kelamin, status merokok, tekanan darah sistolik, dan BMI) untuk menilai dan mengomunikasikan risiko penyakit kardiovaskular, terutama berguna di fasilitas dengan akses terbatas ke pemeriksaan laboratorium.",
+    "source": "who-cvd-risk-know-your-risk-booklet.pdf",
+    "category": "cardiovascular",
+    "type": "answerable",
+    "expected_route": "aggregate"
+  },
+  {
+    "id": "aggregate-003",
+    "question": "Summarize all of WHO's guidance across the diabetes-related documents in this corpus.",
+    "expected_answer": "WHO's diabetes-related guidance in this corpus spans global monitoring frameworks for diabetes prevention and control, second- and third-line medicine and insulin recommendations for blood glucose control, practical management guidance for health workers, cardiometabolic risk management in primary care, and specific recommendations for diabetes care during pregnancy.",
+    "source": "who-diabetes-global-monitoring-guidance.pdf",
+    "category": "diabetes",
+    "type": "answerable",
+    "expected_route": "aggregate"
   }
 ]

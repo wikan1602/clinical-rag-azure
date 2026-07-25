@@ -30,10 +30,19 @@ if st.button("Ask") and question:
         except requests.RequestException as e:
             st.error(f"Request failed: {e}")
         else:
+            st.caption(f"Route: **{data['route']}**" + (f" · Topic: **{data['topic']}**" if data["topic"] else ""))
+            if data["truncated"]:
+                st.warning(
+                    "Some relevant chunks were left out to stay under the token budget — the answer may not "
+                    "cover every matching document."
+                )
+
             st.subheader("Answer")
             st.write(data["answer"])
 
             st.subheader(f"Retrieved chunks ({strategy})")
             for i, chunk in enumerate(data["chunks"], start=1):
-                with st.expander(f"[{i}] {chunk['source']} (score: {chunk['score']:.4f})"):
+                score_label = f"score: {chunk['score']:.4f}" if chunk["score"] is not None else "no relevance score"
+                year_label = f", {chunk['published_year']}" if chunk["published_year"] else ""
+                with st.expander(f"[{i}] {chunk['source']}{year_label} ({score_label})"):
                     st.write(chunk["content"])

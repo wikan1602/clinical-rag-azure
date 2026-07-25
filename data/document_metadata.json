@@ -1,0 +1,33 @@
+{
+  "topics": ["hypertension", "cardiovascular", "diabetes"],
+  "documents": {
+    "who-hypertension-pharmacological-treatment-2021.pdf": {
+      "topic": "hypertension",
+      "published_year": 2021
+    },
+    "who-cvd-risk-know-your-risk-booklet.pdf": {
+      "topic": "cardiovascular",
+      "published_year": 2023
+    },
+    "who-cardiometabolic-risk-management-primary-care-2021.pdf": {
+      "topic": "diabetes",
+      "published_year": 2021
+    },
+    "who-diabetes-global-monitoring-guidance.pdf": {
+      "topic": "diabetes",
+      "published_year": 2024
+    },
+    "who-managing-diabetes-mellitus-health-workers-guide.pdf": {
+      "topic": "diabetes",
+      "published_year": 2007
+    },
+    "who-diabetes-second-third-line-medicines-2018.pdf": {
+      "topic": "diabetes",
+      "published_year": 2018
+    },
+    "who-diabetes-in-pregnancy-recommendations-2025.pdf": {
+      "topic": "diabetes",
+      "published_year": 2025
+    }
+  }
+}

@@ -11,9 +11,23 @@ load_dotenv()
 
 RAW_DIR = Path("data/raw")
 PROCESSED_DIR = Path("data/processed")
+METADATA_PATH = Path("data/document_metadata.json")
 
 
-def make_record(pdf_stem: str, source: str, strategy: str, index: int, text: str) -> dict:
+def load_document_metadata(path: Path = METADATA_PATH) -> dict[str, dict]:
+    manifest = json.loads(path.read_text(encoding="utf-8"))
+    return manifest["documents"]
+
+
+def make_record(
+    pdf_stem: str,
+    source: str,
+    strategy: str,
+    index: int,
+    text: str,
+    topic: str,
+    published_year: int,
+) -> dict:
     return {
         "id": f"{pdf_stem}-{strategy}-{index}",
         "source": source,
@@ -21,6 +35,8 @@ def make_record(pdf_stem: str, source: str, strategy: str, index: int, text: str
         "chunk_index": index,
         "text": text,
         "token_count": count_tokens(text),
+        "topic": topic,
+        "published_year": published_year,
     }
 
 
@@ -29,23 +45,30 @@ def main() -> None:
     if not pdf_paths:
         raise SystemExit(f"No PDFs found in {RAW_DIR}")
 
+    document_metadata = load_document_metadata()
+    missing = [p.name for p in pdf_paths if p.name not in document_metadata]
+    if missing:
+        raise SystemExit(f"Missing entries in {METADATA_PATH} for: {missing}")
+
     fixed_records = []
     semantic_records = []
 
     for pdf_path in pdf_paths:
         print(f"Parsing {pdf_path.name}...")
         text = extract_text_from_pdf(pdf_path)
+        meta = document_metadata[pdf_path.name]
+        topic, published_year = meta["topic"], meta["published_year"]
 
         fixed_chunks = fixed_size_chunk(text)
         fixed_records += [
-            make_record(pdf_path.stem, pdf_path.name, "fixed", i, chunk)
+            make_record(pdf_path.stem, pdf_path.name, "fixed", i, chunk, topic, published_year)
             for i, chunk in enumerate(fixed_chunks)
         ]
 
         print(f"  Semantic chunking {pdf_path.name} (calls embedding API)...")
         semantic_chunks = semantic_chunk(text, embed_fn=embed_texts)
         semantic_records += [
-            make_record(pdf_path.stem, pdf_path.name, "semantic", i, chunk)
+            make_record(pdf_path.stem, pdf_path.name, "semantic", i, chunk, topic, published_year)
             for i, chunk in enumerate(semantic_chunks)
         ]
 
