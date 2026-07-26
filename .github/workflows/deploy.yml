@@ -40,6 +40,15 @@ jobs:
             -e APPLICATIONINSIGHTS_CONNECTION_STRING="${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}" \
             clinical-rag-api:${{ github.sha }}
 
+      - name: Debug getaddrinfo resolution (temporary)
+        run: |
+          echo "--- getaddrinfo (what httpx actually uses) ---"
+          docker exec eval-api python -c "import socket; print(socket.getaddrinfo('openai-clinical-rag.openai.azure.com', 443))" || echo "getaddrinfo failed"
+          echo "--- ipv6 route check on host ---"
+          ip -6 route show || echo "no ipv6 route command output"
+          echo "--- does container have ipv6 addr? ---"
+          docker exec eval-api sh -c "ip -6 addr show 2>&1 || echo 'no ip cmd'"
+
       - name: Wait for candidate API to become healthy
         run: |
           for i in $(seq 1 30); do
