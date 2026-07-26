@@ -40,6 +40,14 @@ jobs:
             -e APPLICATIONINSIGHTS_CONNECTION_STRING="${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}" \
             clinical-rag-api:${{ github.sha }}
 
+      - name: Debug container env (temporary)
+        run: |
+          docker ps -a --filter name=eval-api
+          echo "--- Config.Env ---"
+          docker inspect eval-api --format '{{range .Config.Env}}{{println .}}{{end}}' | grep APPLICATIONINSIGHTS || echo "NOT FOUND in Config.Env"
+          echo "--- length as seen by container process (if running) ---"
+          docker exec eval-api sh -c 'echo "len=${#APPLICATIONINSIGHTS_CONNECTION_STRING}"' || echo "exec failed (container may have exited)"
+
       - name: Wait for candidate API to become healthy
         run: |
           for i in $(seq 1 30); do
