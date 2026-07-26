@@ -28,6 +28,7 @@ jobs:
       - name: Run candidate API container for evaluation
         run: |
           docker run -d --name eval-api -p 8000:8000 \
+            --dns 8.8.8.8 --dns 1.1.1.1 \
             -e AZURE_OPENAI_ENDPOINT="${{ secrets.AZURE_OPENAI_ENDPOINT }}" \
             -e AZURE_OPENAI_API_KEY="${{ secrets.AZURE_OPENAI_API_KEY }}" \
             -e AZURE_OPENAI_API_VERSION="${{ secrets.AZURE_OPENAI_API_VERSION }}" \
