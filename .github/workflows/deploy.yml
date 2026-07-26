@@ -25,29 +25,27 @@ jobs:
       - name: Build UI image
         run: docker build -f Dockerfile.ui -t clinical-rag-ui:${{ github.sha }} .
 
-      - name: Run candidate API container for evaluation
-        run: |
-          docker run -d --name eval-api --network host \
-            -e AZURE_OPENAI_ENDPOINT="${{ secrets.AZURE_OPENAI_ENDPOINT }}" \
-            -e AZURE_OPENAI_API_KEY="${{ secrets.AZURE_OPENAI_API_KEY }}" \
-            -e AZURE_OPENAI_API_VERSION="${{ secrets.AZURE_OPENAI_API_VERSION }}" \
-            -e AZURE_OPENAI_CHAT_DEPLOYMENT="${{ secrets.AZURE_OPENAI_CHAT_DEPLOYMENT }}" \
-            -e AZURE_OPENAI_EMBEDDING_DEPLOYMENT="${{ secrets.AZURE_OPENAI_EMBEDDING_DEPLOYMENT }}" \
-            -e AZURE_SEARCH_ENDPOINT="${{ secrets.AZURE_SEARCH_ENDPOINT }}" \
-            -e AZURE_SEARCH_API_KEY="${{ secrets.AZURE_SEARCH_API_KEY }}" \
-            -e AZURE_SEARCH_INDEX_FIXED="${{ secrets.AZURE_SEARCH_INDEX_FIXED }}" \
-            -e AZURE_SEARCH_INDEX_SEMANTIC="${{ secrets.AZURE_SEARCH_INDEX_SEMANTIC }}" \
-            -e APPLICATIONINSIGHTS_CONNECTION_STRING="${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}" \
-            clinical-rag-api:${{ github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
 
-      - name: Debug getaddrinfo resolution (temporary)
+      - run: pip install -r requirements.txt
+
+      - name: Start candidate API for evaluation (no Docker)
+        env:
+          AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+          AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
+          AZURE_OPENAI_API_VERSION: ${{ secrets.AZURE_OPENAI_API_VERSION }}
+          AZURE_OPENAI_CHAT_DEPLOYMENT: ${{ secrets.AZURE_OPENAI_CHAT_DEPLOYMENT }}
+          AZURE_OPENAI_EMBEDDING_DEPLOYMENT: ${{ secrets.AZURE_OPENAI_EMBEDDING_DEPLOYMENT }}
+          AZURE_SEARCH_ENDPOINT: ${{ secrets.AZURE_SEARCH_ENDPOINT }}
+          AZURE_SEARCH_API_KEY: ${{ secrets.AZURE_SEARCH_API_KEY }}
+          AZURE_SEARCH_INDEX_FIXED: ${{ secrets.AZURE_SEARCH_INDEX_FIXED }}
+          AZURE_SEARCH_INDEX_SEMANTIC: ${{ secrets.AZURE_SEARCH_INDEX_SEMANTIC }}
+          APPLICATIONINSIGHTS_CONNECTION_STRING: ${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}
         run: |
-          echo "--- getaddrinfo (what httpx actually uses) ---"
-          docker exec eval-api python -c "import socket; print(socket.getaddrinfo('openai-clinical-rag.openai.azure.com', 443))" || echo "getaddrinfo failed"
-          echo "--- ipv6 route check on host ---"
-          ip -6 route show || echo "no ipv6 route command output"
-          echo "--- does container have ipv6 addr? ---"
-          docker exec eval-api sh -c "ip -6 addr show 2>&1 || echo 'no ip cmd'"
+          nohup uvicorn app.main:app --host 0.0.0.0 --port 8000 > candidate-api.log 2>&1 &
+          echo $! > candidate-api.pid
 
       - name: Wait for candidate API to become healthy
         run: |
@@ -59,14 +57,8 @@ jobs:
             sleep 2
           done
           echo "API did not become healthy in time"
-          docker logs eval-api
+          cat candidate-api.log
           exit 1
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.14'
-
-      - run: pip install -r requirements.txt
 
       - name: Run eval suite against candidate build
         env:
@@ -85,13 +77,16 @@ jobs:
       - name: Gate deployment on eval scores
         run: python .github/scripts/check_eval_gate.py
 
-      - name: Dump candidate container logs (temporary)
+      - name: Dump candidate API logs
         if: always()
-        run: docker logs eval-api
+        run: cat candidate-api.log || true
 
-      - name: Stop candidate container
+      - name: Stop candidate API process
         if: always()
-        run: docker rm -f eval-api || true
+        run: |
+          if [ -f candidate-api.pid ]; then
+            kill "$(cat candidate-api.pid)" || true
+          fi
 
       - name: Azure login (OIDC)
         uses: azure/login@v2
