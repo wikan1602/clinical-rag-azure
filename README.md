@@ -7,10 +7,11 @@ See [Blueprint_Production_RAG_Azure.md](Blueprint_Production_RAG_Azure.md) for t
 ## Project Structure
 
 - `ingestion/` — PDF parsing, chunking (fixed-size and semantic), embedding + indexing scripts
-- `app/` — FastAPI RAG service (retrieval → prompt → generation)
+- `app/` — FastAPI RAG service (query router → retrieval → prompt → generation)
 - `ui/` — Streamlit UI for manual testing
-- `eval/` — RAGAS evaluation harness and golden dataset
-- `infra/` — IaC templates (Bicep) for Azure resources
+- `eval/` — RAGAS-style evaluation harness and golden dataset
+- `infra/` — IaC templates (Bicep) for all Azure resources
+- `.github/workflows/` — CI/CD: build → eval-gate → deploy to Azure Container Apps
 
 ## Setup
 
