@@ -1,18 +1,31 @@
 import logging
+import time
 
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents import SearchClient
 from azure.search.documents.models import VectorizedQuery
-from openai import AzureOpenAI
+from openai import APIConnectionError, AzureOpenAI, RateLimitError
 
 from app.config import Settings
 
 logger = logging.getLogger("rag.retrieval")
 
 
-def embed_query(client: AzureOpenAI, deployment: str, text: str) -> list[float]:
-    response = client.embeddings.create(model=deployment, input=[text])
-    return response.data[0].embedding
+def embed_query(client: AzureOpenAI, deployment: str, text: str, max_retries: int = 5) -> list[float]:
+    for attempt in range(max_retries):
+        try:
+            response = client.embeddings.create(model=deployment, input=[text])
+            return response.data[0].embedding
+        except RateLimitError:
+            if attempt == max_retries - 1:
+                raise
+            logger.warning("openai_retry", extra={"reason": "rate_limited", "attempt": attempt + 1, "wait_seconds": 60})
+            time.sleep(60)
+        except APIConnectionError:
+            if attempt == max_retries - 1:
+                raise
+            logger.warning("openai_retry", extra={"reason": "connection_error", "attempt": attempt + 1, "wait_seconds": 10})
+            time.sleep(10)
 
 
 def _get_search_client(settings: Settings, index_name: str) -> SearchClient:

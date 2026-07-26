@@ -1,6 +1,7 @@
 import logging
+import time
 
-from openai import AzureOpenAI
+from openai import APIConnectionError, AzureOpenAI, RateLimitError
 
 logger = logging.getLogger("rag.generation")
 
@@ -32,18 +33,33 @@ def generate_answer(
     question: str,
     chunks: list[dict],
     route: str = "semantic",
+    max_retries: int = 5,
 ) -> str:
     prompt = build_prompt(question, chunks)
     logger.info("generation_prompt", extra={"question": question, "prompt": prompt, "route": route})
 
     system_prompt = AGGREGATE_SYSTEM_PROMPT if route == "aggregate" else SYSTEM_PROMPT
-    response = client.chat.completions.create(
-        model=deployment,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": prompt},
-        ],
-    )
+    response = None
+    for attempt in range(max_retries):
+        try:
+            response = client.chat.completions.create(
+                model=deployment,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": prompt},
+                ],
+            )
+            break
+        except RateLimitError:
+            if attempt == max_retries - 1:
+                raise
+            logger.warning("openai_retry", extra={"reason": "rate_limited", "attempt": attempt + 1, "wait_seconds": 60})
+            time.sleep(60)
+        except APIConnectionError:
+            if attempt == max_retries - 1:
+                raise
+            logger.warning("openai_retry", extra={"reason": "connection_error", "attempt": attempt + 1, "wait_seconds": 10})
+            time.sleep(10)
     answer = response.choices[0].message.content
 
     logger.info(
