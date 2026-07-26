@@ -76,6 +76,10 @@ jobs:
       - name: Gate deployment on eval scores
         run: python .github/scripts/check_eval_gate.py
 
+      - name: Dump candidate container logs (temporary)
+        if: always()
+        run: docker logs eval-api
+
       - name: Stop candidate container
         if: always()
         run: docker rm -f eval-api || true
