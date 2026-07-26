@@ -40,14 +40,6 @@ jobs:
             -e APPLICATIONINSIGHTS_CONNECTION_STRING="${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}" \
             clinical-rag-api:${{ github.sha }}
 
-      - name: Debug container env (temporary)
-        run: |
-          docker ps -a --filter name=eval-api
-          echo "--- Config.Env ---"
-          docker inspect eval-api --format '{{range .Config.Env}}{{println .}}{{end}}' | grep APPLICATIONINSIGHTS || echo "NOT FOUND in Config.Env"
-          echo "--- length as seen by container process (if running) ---"
-          docker exec eval-api sh -c 'echo "len=${#APPLICATIONINSIGHTS_CONNECTION_STRING}"' || echo "exec failed (container may have exited)"
-
       - name: Wait for candidate API to become healthy
         run: |
           for i in $(seq 1 30); do
@@ -68,6 +60,17 @@ jobs:
       - run: pip install -r requirements.txt
 
       - name: Run eval suite against candidate build
+        env:
+          AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+          AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
+          AZURE_OPENAI_API_VERSION: ${{ secrets.AZURE_OPENAI_API_VERSION }}
+          AZURE_OPENAI_CHAT_DEPLOYMENT: ${{ secrets.AZURE_OPENAI_CHAT_DEPLOYMENT }}
+          AZURE_OPENAI_EMBEDDING_DEPLOYMENT: ${{ secrets.AZURE_OPENAI_EMBEDDING_DEPLOYMENT }}
+          AZURE_SEARCH_ENDPOINT: ${{ secrets.AZURE_SEARCH_ENDPOINT }}
+          AZURE_SEARCH_API_KEY: ${{ secrets.AZURE_SEARCH_API_KEY }}
+          AZURE_SEARCH_INDEX_FIXED: ${{ secrets.AZURE_SEARCH_INDEX_FIXED }}
+          AZURE_SEARCH_INDEX_SEMANTIC: ${{ secrets.AZURE_SEARCH_INDEX_SEMANTIC }}
+          APPLICATIONINSIGHTS_CONNECTION_STRING: ${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}
         run: python -m eval.run_eval
 
       - name: Gate deployment on eval scores
