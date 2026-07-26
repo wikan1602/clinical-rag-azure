@@ -1,0 +1,96 @@
+name: Build, Evaluate, Deploy
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+env:
+  ACR_NAME: acrclinicalragzgyaq2umgqzpg
+  RESOURCE_GROUP: rg-clinical-rag
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-evaluate-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build API image
+        run: docker build -f Dockerfile.api -t clinical-rag-api:${{ github.sha }} .
+
+      - name: Build UI image
+        run: docker build -f Dockerfile.ui -t clinical-rag-ui:${{ github.sha }} .
+
+      - name: Run candidate API container for evaluation
+        run: |
+          docker run -d --name eval-api -p 8000:8000 \
+            -e AZURE_OPENAI_ENDPOINT="${{ secrets.AZURE_OPENAI_ENDPOINT }}" \
+            -e AZURE_OPENAI_API_KEY="${{ secrets.AZURE_OPENAI_API_KEY }}" \
+            -e AZURE_OPENAI_API_VERSION="${{ secrets.AZURE_OPENAI_API_VERSION }}" \
+            -e AZURE_OPENAI_CHAT_DEPLOYMENT="${{ secrets.AZURE_OPENAI_CHAT_DEPLOYMENT }}" \
+            -e AZURE_OPENAI_EMBEDDING_DEPLOYMENT="${{ secrets.AZURE_OPENAI_EMBEDDING_DEPLOYMENT }}" \
+            -e AZURE_SEARCH_ENDPOINT="${{ secrets.AZURE_SEARCH_ENDPOINT }}" \
+            -e AZURE_SEARCH_API_KEY="${{ secrets.AZURE_SEARCH_API_KEY }}" \
+            -e AZURE_SEARCH_INDEX_FIXED="${{ secrets.AZURE_SEARCH_INDEX_FIXED }}" \
+            -e AZURE_SEARCH_INDEX_SEMANTIC="${{ secrets.AZURE_SEARCH_INDEX_SEMANTIC }}" \
+            -e APPLICATIONINSIGHTS_CONNECTION_STRING="${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}" \
+            clinical-rag-api:${{ github.sha }}
+
+      - name: Wait for candidate API to become healthy
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8000/health; then
+              echo "API is healthy"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "API did not become healthy in time"
+          docker logs eval-api
+          exit 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - run: pip install -r requirements.txt
+
+      - name: Run eval suite against candidate build
+        run: python -m eval.run_eval
+
+      - name: Gate deployment on eval scores
+        run: python .github/scripts/check_eval_gate.py
+
+      - name: Stop candidate container
+        if: always()
+        run: docker rm -f eval-api || true
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Push images to Azure Container Registry
+        run: |
+          az acr login --name $ACR_NAME
+          docker tag clinical-rag-api:${{ github.sha }} $ACR_NAME.azurecr.io/clinical-rag-api:${{ github.sha }}
+          docker tag clinical-rag-api:${{ github.sha }} $ACR_NAME.azurecr.io/clinical-rag-api:latest
+          docker tag clinical-rag-ui:${{ github.sha }} $ACR_NAME.azurecr.io/clinical-rag-ui:${{ github.sha }}
+          docker tag clinical-rag-ui:${{ github.sha }} $ACR_NAME.azurecr.io/clinical-rag-ui:latest
+          docker push $ACR_NAME.azurecr.io/clinical-rag-api:${{ github.sha }}
+          docker push $ACR_NAME.azurecr.io/clinical-rag-api:latest
+          docker push $ACR_NAME.azurecr.io/clinical-rag-ui:${{ github.sha }}
+          docker push $ACR_NAME.azurecr.io/clinical-rag-ui:latest
+
+      - name: Deploy to Azure Container Apps
+        run: |
+          az containerapp update -g $RESOURCE_GROUP -n ca-clinical-rag-api \
+            --image $ACR_NAME.azurecr.io/clinical-rag-api:${{ github.sha }}
+          az containerapp update -g $RESOURCE_GROUP -n ca-clinical-rag-ui \
+            --image $ACR_NAME.azurecr.io/clinical-rag-ui:${{ github.sha }}
