@@ -40,6 +40,17 @@ jobs:
             -e APPLICATIONINSIGHTS_CONNECTION_STRING="${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}" \
             clinical-rag-api:${{ github.sha }}
 
+      - name: Debug DNS config inside container (temporary)
+        run: |
+          echo "--- container /etc/resolv.conf ---"
+          docker exec eval-api cat /etc/resolv.conf
+          echo "--- host /etc/resolv.conf ---"
+          cat /etc/resolv.conf
+          echo "--- getent hosts test from inside container ---"
+          docker exec eval-api getent hosts openai-clinical-rag.openai.azure.com || echo "getent failed"
+          echo "--- python socket test from inside container ---"
+          docker exec eval-api python -c "import socket; print(socket.gethostbyname('openai-clinical-rag.openai.azure.com'))" || echo "python resolution failed"
+
       - name: Wait for candidate API to become healthy
         run: |
           for i in $(seq 1 30); do
