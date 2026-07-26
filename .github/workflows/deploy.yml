@@ -31,6 +31,16 @@ jobs:
 
       - run: pip install -r requirements.txt
 
+      - name: Debug actual secret-derived hostnames (temporary)
+        env:
+          AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+          AZURE_SEARCH_ENDPOINT: ${{ secrets.AZURE_SEARCH_ENDPOINT }}
+        run: |
+          python -c "import os; v=os.environ['AZURE_OPENAI_ENDPOINT']; print('AZURE_OPENAI_ENDPOINT repr=', repr(v), 'len=', len(v))"
+          python -c "import os; v=os.environ['AZURE_SEARCH_ENDPOINT']; print('AZURE_SEARCH_ENDPOINT repr=', repr(v), 'len=', len(v))"
+          python -c "import os, socket; from urllib.parse import urlparse; host = urlparse(os.environ['AZURE_OPENAI_ENDPOINT']).hostname; print('AZURE_OPENAI_ENDPOINT hostname=', repr(host)); print('getaddrinfo=', socket.getaddrinfo(host, 443))"
+          python -c "import os, socket; from urllib.parse import urlparse; host = urlparse(os.environ['AZURE_SEARCH_ENDPOINT']).hostname; print('AZURE_SEARCH_ENDPOINT hostname=', repr(host)); print('getaddrinfo=', socket.getaddrinfo(host, 443))"
+
       - name: Start candidate API for evaluation (no Docker)
         env:
           AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
