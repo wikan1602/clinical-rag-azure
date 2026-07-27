@@ -31,21 +31,6 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Debug DNS resolution via public resolvers (temporary)
-        env:
-          AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
-        run: |
-          HOST=$(python -c "import os; from urllib.parse import urlparse; print(urlparse(os.environ['AZURE_OPENAI_ENDPOINT']).hostname)")
-          echo "Resolving host: $HOST"
-          echo "--- default resolver (runner's own, e.g. systemd-resolved) ---"
-          python -c "import socket; print(socket.getaddrinfo('$HOST', 443))" || echo "default resolver FAILED"
-          echo "--- Google public DoH (independent of runner's local resolver) ---"
-          curl -s "https://dns.google/resolve?name=$HOST&type=A" || echo "Google DoH query failed"
-          echo ""
-          echo "--- Cloudflare public DoH (second independent resolver) ---"
-          curl -s "https://cloudflare-dns.com/dns-query?name=$HOST&type=A" -H "accept: application/dns-json" || echo "Cloudflare DoH query failed"
-          echo ""
-
       - name: Start candidate API for evaluation (no Docker)
         env:
           AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
